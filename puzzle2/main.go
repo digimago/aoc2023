@@ -20,6 +20,7 @@ type Game struct {
 	number int
 	moves  []Move
 	valid  bool
+	power  Move
 }
 
 type Move struct {
@@ -67,14 +68,23 @@ func makeMoves(s string, g Game) Game {
 			if strings.Contains(l, "red") {
 				//red
 				m.red, _ = strconv.Atoi(c[0])
+				if m.red > g.power.red {
+					g.power.red = m.red
+				}
 			}
 			if strings.Contains(l, "green") {
 				//green
 				m.green, _ = strconv.Atoi(c[0])
+				if m.green > g.power.green {
+					g.power.green = m.green
+				}
 			}
 			if strings.Contains(l, "blue") {
 				//blue
 				m.blue, _ = strconv.Atoi(c[0])
+				if m.blue > g.power.blue {
+					g.power.blue = m.blue
+				}
 			}
 		}
 		if checkInvalidMove(m) {
@@ -92,6 +102,7 @@ func main() {
 
 	var sum int
 	var g Game
+	var gsum int
 	for _, l := range lines {
 		if len(l) < 6 {
 			continue
@@ -100,6 +111,8 @@ func main() {
 		if g.valid {
 			sum = sum + g.number
 		}
+		gsum = gsum + g.power.blue + g.power.green + g.power.red
 	}
 	fmt.Printf("Result part 1: %v", sum)
+	fmt.Printf("Result part 2: %v", gsum)
 }
