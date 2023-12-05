@@ -86,7 +86,9 @@ func makeMoves(s string, g Game) Game {
 					g.power.blue = m.blue
 				}
 			}
+
 		}
+
 		if checkInvalidMove(m) {
 			// fmt.Printf("Invalid move detected: %v for move %v\n", g.number, m)
 			g.valid = false
@@ -101,9 +103,10 @@ func makeMoves(s string, g Game) Game {
 func main() {
 
 	var sum int
-	var g Game
+
 	var gsum int
 	for _, l := range lines {
+		var g Game
 		if len(l) < 6 {
 			continue
 		}
@@ -111,8 +114,9 @@ func main() {
 		if g.valid {
 			sum = sum + g.number
 		}
-		gsum = gsum + g.power.blue + g.power.green + g.power.red
+		gsum = gsum + (g.power.blue * g.power.green * g.power.red)
+
 	}
-	fmt.Printf("Result part 1: %v", sum)
-	fmt.Printf("Result part 2: %v", gsum)
+	fmt.Printf("Result part 1: %v\n", sum)
+	fmt.Printf("Result part 2: %v\n", gsum)
 }
