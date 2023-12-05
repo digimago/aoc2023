@@ -41,7 +41,7 @@ func lineToGame(s string) Game {
 	line := strings.Split(s, ":")
 	g := strings.Split(line[0], " ")
 	game.number, _ = strconv.Atoi(g[1])
-	game.moves, game.valid = makeMoves(line[1], game.number)
+	game = makeMoves(line[1], game)
 	return game
 }
 
@@ -53,10 +53,10 @@ func checkInvalidMove(m Move) bool {
 	return false
 }
 
-func makeMoves(s string, g int) ([]Move, bool) {
+func makeMoves(s string, g Game) Game {
 	var moves []Move
-	var valid bool
-	valid = true
+
+	g.valid = true
 	p := strings.Split(s, ";")
 	for _, j := range p {
 		var m Move
@@ -78,13 +78,14 @@ func makeMoves(s string, g int) ([]Move, bool) {
 			}
 		}
 		if checkInvalidMove(m) {
-			// fmt.Printf("Invalid move detected: %v for move %v\n", g, m)
-			valid = false
+			// fmt.Printf("Invalid move detected: %v for move %v\n", g.number, m)
+			g.valid = false
 		}
 		moves = append(moves, m)
 
 	}
-	return moves, valid
+	g.moves = moves
+	return g
 }
 
 func main() {
@@ -100,5 +101,5 @@ func main() {
 			sum = sum + g.number
 		}
 	}
-	fmt.Printf("Result: %v", sum)
+	fmt.Printf("Result part 1: %v", sum)
 }
