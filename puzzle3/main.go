@@ -4,6 +4,7 @@ import (
 	_ "embed"
 	"fmt"
 	"os"
+	"regexp"
 	"strings"
 )
 
@@ -23,5 +24,8 @@ func init() {
 }
 
 func main() {
-	fmt.Println(lines)
+	pattern := regexp.MustCompile(`(?i)(?:)(\d+)`)
+
+	m := pattern.FindAllString(lines[0], -1)
+	fmt.Println(m)
 }
