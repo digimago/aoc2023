@@ -3,6 +3,7 @@ package main
 import (
 	_ "embed"
 	"fmt"
+	"math"
 	"os"
 	"strings"
 )
@@ -25,26 +26,45 @@ func init() {
 
 func main() {
 	var totalScore int16
-	for _, l := range lines[0:4] {
+	for _, l := range lines {
 		totalScore = totalScore + scoreLine(l)
 	}
 	fmt.Printf("total score: %v", totalScore)
 }
 
 func scoreLine(l string) int16 {
+
 	s := strings.Split(l, "|")
-	var lineScore int16 = 0
-	//fmt.Println(s[0])
+	var lineScore float64 = 0
+	var scoreCount float64 = -1
+	if len(l) <= 1 {
+		return int16(lineScore)
+	}
 	wins := strings.Split(s[0], ":")
-	fmt.Println(wins[1])
+
 	myList := numList(s[1])
 
 	for _, a := range myList {
-		if strings.Contains(wins[1], a) {
-			fmt.Printf("found %v in: %v\n", a, wins[1])
+		if a == " " || a == "" {
+			continue
+		}
+		if checkInSlice(wins[1], a) {
+			// fmt.Printf("found %v in: %v\n", a, wins[1])
+			scoreCount++
 		}
 	}
-	return lineScore
+	lineScore = math.Pow(2, scoreCount)
+	return int16(lineScore)
+}
+
+func checkInSlice(s string, c string) bool {
+	k := strings.Split(s, " ")
+	for _, x := range k {
+		if x == c {
+			return true
+		}
+	}
+	return false
 }
 
 func numList(s string) []string {
